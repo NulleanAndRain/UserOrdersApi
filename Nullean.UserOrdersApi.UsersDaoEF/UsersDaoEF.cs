@@ -1,13 +1,9 @@
-﻿using Nullean.UserOrdersApi.UsersDaoInterface;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
+using Nullean.UserOrdersApi.UsersDaoInterface;
 using Nullean.UserOrdersApi.EFContext;
 using Nullean.UserOrdersApi.Entities;
-using Microsoft.EntityFrameworkCore;
-
-using UserModel = Nullean.UserOrdersApi.Entities.User;
-using OrderModel = Nullean.UserOrdersApi.Entities.Order;
-using ProductModel = Nullean.UserOrdersApi.Entities.Product;
-
-using UserEF = Nullean.UserOrdersApi.EFContext.EfEntities.User;
+using Nullean.UserOrdersApi.EFContext.EfEntities;
 
 namespace Nullean.UserOrdersApi.UsersDaoEF
 {
@@ -20,7 +16,7 @@ namespace Nullean.UserOrdersApi.UsersDaoEF
             _ctx = ctx;
         }
 
-        public async Task<Response> CreateUser(UserModel user)
+        public async Task<Response> CreateUser(User user)
         {
             var response = new Response();
             try
@@ -48,19 +44,13 @@ namespace Nullean.UserOrdersApi.UsersDaoEF
             return response;
         }
 
-        public async Task<Response<IEnumerable<UserModel>>> GetAllUsers()
+        public async Task<Response<IEnumerable<User>>> GetAllUsers()
         {
-            var response = new Response<IEnumerable<UserModel>>();
+            var response = new Response<IEnumerable<User>>();
             try
             {
                 var users = _ctx.Users
-                    .Select(u => new UserModel
-                    {
-                        Id = u.UserId,
-                        Username = u.Username,
-                        Role = u.Role,
-                        Password = u.Password,
-                    });
+                    .MapUsers();
                 response.ResponseBody = await users.ToListAsync();
             }
             catch (Exception ex)
@@ -76,21 +66,62 @@ namespace Nullean.UserOrdersApi.UsersDaoEF
             return response;
         }
 
-        public async Task<Response<UserModel>> GetUserByName(string username)
+        public async Task<Response<IEnumerable<User>>> GetUsersByName(string username)
         {
-            var response = new Response<UserModel>();
+            var response = new Response<IEnumerable<User>>();
+            try
+            {
+                var users = await _ctx.Users
+                    .Where(u => u.Username.Contains(username))
+                    .MapUsers()
+                    .ToListAsync();
+                response.ResponseBody = users;
+            }
+            catch (Exception ex)
+            {
+                response.Errors = new List<Error>()
+                {
+                    new Error
+                    {
+                        Message = ex.Message
+                    }
+                };
+            }
+            return response;
+        }
+        public async Task<Response<User>> GetUserByName(string username)
+        {
+            var response = new Response<User>();
+            try
+            {
+                var users = await _ctx.Users
+                    .Where(u => u.Username == username)
+                    .MapUsers()
+                    .FirstOrDefaultAsync();
+                response.ResponseBody = users;
+            }
+            catch (Exception ex)
+            {
+                response.Errors = new List<Error>()
+                {
+                    new Error
+                    {
+                        Message = ex.Message
+                    }
+                };
+            }
+            return response;
+        }
+
+        public async Task<Response<User>> GetUserDetials(Guid Id)
+        {
+            var response = new Response<User>();
             try
             {
                 var user = await _ctx.Users
-                    .Where(u => u.Username == username)
-                    .Select(u => new UserModel
-                    {
-                        Id = u.UserId,
-                        Username = u.Username,
-                        Password = u.Password,
-                        Role = u.Role
-                    })
-                    .FirstOrDefaultAsync();
+                    .Where(u => u.UserId == Id)
+                    .MapUsers()
+                    .SingleOrDefaultAsync();
                 response.ResponseBody = user;
             }
             catch (Exception ex)
@@ -106,45 +137,29 @@ namespace Nullean.UserOrdersApi.UsersDaoEF
             return response;
         }
 
-        public async Task<Response<UserDetailed>> GetUserDetials(Guid Id)
+    }
+
+    internal static class QueryHelper
+    {
+        public static IQueryable<User> MapUsers(this IQueryable<UserEF> users)
         {
-            var response = new Response<UserDetailed>();
-            try
+            return users.Select(u => new User
             {
-                var user = await _ctx.Users
-                    //.Include(u => u.Orders)
-                    //.Include(u => u.Orders.Select(o => o.Products))
-                    .Where(u => u.UserId == Id)
-                    .Select(u => new UserDetailed
-                    {
-                        Id = u.UserId,
-                        Orders = u.Orders.Select(o => new OrderModel
-                        {
-                            Id = o.OrderId,
-                            Products = o.Products.Select(p => new ProductModel
-                            {
-                                Id = p.ProductId,
-                                Price = p.Price,
-                                Name = p.Name
-                            })
-                        }),
-                        Username = u.Username,
-                        Password = u.Password
-                    })
-                    .SingleOrDefaultAsync();
-                response.ResponseBody = user;
-            }
-            catch (Exception ex)
-            {
-                response.Errors = new List<Error>()
+                Id = u.UserId,
+                Orders = u.Orders.Select(o => new Order
                 {
-                    new Error
+                    Id = o.OrderId,
+                    Products = o.Products.Select(p => new Product
                     {
-                        Message = ex.Message
-                    }
-                };
-            }
-            return response;
+                        Id = p.ProductId,
+                        Price = p.Price,
+                        Name = p.Name
+                    })
+                }),
+                Username = u.Username,
+                Password = u.Password,
+                Role = u.Role,
+            });
         }
     }
 }

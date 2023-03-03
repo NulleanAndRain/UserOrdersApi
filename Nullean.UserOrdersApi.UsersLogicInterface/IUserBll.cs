@@ -6,6 +6,6 @@ namespace Nullean.UserOrdersApi.UsersLogicInterface
     {
         public Task<Response<User>> LoginUser(string username, string password);
         public Task<Response<User>> CreateUser(User user);
-        public Task<Response<UserDetailed>> GetUserDetials(Guid id);
+        public Task<Response<User>> GetUserDetials(Guid id);
     }
 }

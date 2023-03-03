@@ -7,8 +7,8 @@ using Nullean.UserOrdersApi.EFContext.EfEntities;
 using OrderModel = Nullean.UserOrdersApi.Entities.Order;
 using ProductModel = Nullean.UserOrdersApi.Entities.Product;
 
-using OrderEF = Nullean.UserOrdersApi.EFContext.EfEntities.Order;
-using ProductEF = Nullean.UserOrdersApi.EFContext.EfEntities.Product;
+using OrderEF = Nullean.UserOrdersApi.EFContext.EfEntities.OrderEF;
+using ProductEF = Nullean.UserOrdersApi.EFContext.EfEntities.ProductEF;
 
 namespace Nullean.UserOrdersApi.OrdersDaoEF
 {

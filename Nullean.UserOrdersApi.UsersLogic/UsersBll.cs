@@ -43,9 +43,9 @@ namespace Nullean.UserOrdersApi.UsersLogic
             return response;
         }
 
-        public async Task<Response<UserDetailed>> GetUserDetials(Guid id)
+        public async Task<Response<User>> GetUserDetials(Guid id)
         {
-            var response = new Response<UserDetailed>();
+            var response = new Response<User>();
             try
             {
                 var res = await _dao.GetUserDetials(id);

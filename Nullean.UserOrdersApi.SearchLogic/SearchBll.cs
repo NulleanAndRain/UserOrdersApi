@@ -1,11 +1,11 @@
 ﻿using Nullean.UserOrdersApi.Entities;
 using Nullean.UserOrdersApi.OrdersDaoInterface;
-using Nullean.UserOrdersApi.OrdersLogicInterface;
+using Nullean.UserOrdersApi.SearchLogicInterface;
 using Nullean.UserOrdersApi.UsersDaoInterface;
 
 namespace Nullean.UserOrdersApi.SearchLogic
 {
-    public class SearchBll : ISearchLogic
+    public class SearchBll : ISearchBll
     {
         private IUsersDao _usersDao;
         private IOrdersDao _ordersDao;
@@ -18,32 +18,66 @@ namespace Nullean.UserOrdersApi.SearchLogic
 
         public async Task<Response<IEnumerable<Product>>> SearchProductsByName(string name)
         {
-            var productsResponse = await _ordersDao.GetAllProducts();
-            IEnumerable<Product> products = null;
-            if (productsResponse.Errors?.Count == 0)
+            var productsResponse = new Response<IEnumerable<Product>>();
+            try
             {
-                products = productsResponse.ResponseBody.Where(p => p.Name.Contains(name));
+                var res = await _ordersDao.GetAllProducts();
+                if (res.Errors?.Any() ?? false)
+                {
+                    productsResponse.Errors = res.Errors;
+                }
+                else
+                {
+                    productsResponse.ResponseBody = res.ResponseBody.Where(p => p.Name.Contains(name));
+                }
             }
-            return new Response<IEnumerable<Product>>()
+            catch (Exception ex)
             {
-                ResponseBody = products,
-                Errors = productsResponse.Errors
-            };
+                HandleExeption(productsResponse, ex);
+            }
+            return productsResponse;
         }
 
         public async Task<Response<IEnumerable<User>>> SearchUsersByName(string name)
         {
-            var usersResponse = await _usersDao.GetAllUsers();
-            IEnumerable<User> users = null;
-            if (usersResponse.Errors?.Count == 0)
+
+            var usersResponse = new Response<IEnumerable<User>>();
+            try
             {
-                users = usersResponse.ResponseBody.Where(u => u.Username.Contains(name));
+                var res = await _usersDao.GetUsersByName(name);
+                if (res.Errors?.Any() ?? false)
+                {
+                    usersResponse.Errors = res.Errors;
+                }
+                else
+                {
+                    usersResponse.ResponseBody = res.ResponseBody;
+                }
             }
-            return new Response<IEnumerable<User>>()
+            catch (Exception ex)
             {
-                ResponseBody = users,
-                Errors = usersResponse.Errors
+                HandleExeption(usersResponse, ex);
+            }
+            return usersResponse;
+        }
+
+        private void HandleExeption(Response response, Exception ex)
+        {
+            var e = new Error
+            {
+                Message = ex.Message
             };
+            if (response.Errors?.Any() ?? false)
+            {
+                response.Errors.Add(e);
+            }
+            else
+            {
+                response.Errors = new List<Error>
+                    {
+                        e
+                    };
+            }
         }
     }
 }

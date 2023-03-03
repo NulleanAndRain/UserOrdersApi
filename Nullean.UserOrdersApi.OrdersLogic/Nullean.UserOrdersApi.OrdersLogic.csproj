@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Nullean.UserOrdersApi.Entities\Nullean.UserOrdersApi.Entities.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.OrdersDao\Nullean.UserOrdersApi.OrdersDaoInterface.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.OrdersLogicInterface\Nullean.UserOrdersApi.OrdersLogicInterface.csproj" />
+  </ItemGroup>
+
 </Project>
