@@ -28,7 +28,7 @@ namespace Nullean.UserOrdersApi.SearchLogic
                 }
                 else
                 {
-                    productsResponse.ResponseBody = res.ResponseBody.Where(p => p.Name.Contains(name));
+                    productsResponse.ResponseBody = res.ResponseBody.Where(p => p.Name.ToLower().Contains(name.ToLower()));
                 }
             }
             catch (Exception ex)
@@ -44,14 +44,22 @@ namespace Nullean.UserOrdersApi.SearchLogic
             var usersResponse = new Response<IEnumerable<User>>();
             try
             {
-                var res = await _usersDao.GetUsersByName(name);
+                var res = await _usersDao.GetAllUsers();
                 if (res.Errors?.Any() ?? false)
                 {
                     usersResponse.Errors = res.Errors;
                 }
                 else
                 {
-                    usersResponse.ResponseBody = res.ResponseBody;
+                    usersResponse.ResponseBody = res.ResponseBody
+                        .Where(u => u.Username.ToLower().Contains(name.ToLower()))
+                        .Select(u =>
+                        {
+                            if (u.Orders == null) u.Orders = new List<Order>();
+                            u.TotalOrdersPrice = u.Orders.Sum(o => o.TotalPrice);
+                            u.TotalOrdersCount = u.Orders.Count();
+                            return u;
+                        });
                 }
             }
             catch (Exception ex)

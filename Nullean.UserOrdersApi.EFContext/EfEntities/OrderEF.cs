@@ -1,5 +1,8 @@
-﻿namespace Nullean.UserOrdersApi.EFContext.EfEntities
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Nullean.UserOrdersApi.EFContext.EfEntities
 {
+    [PrimaryKey(nameof(OrderId))]
     public class OrderEF
     {
         public Guid OrderId { get; set; }

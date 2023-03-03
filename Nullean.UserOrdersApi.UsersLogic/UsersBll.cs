@@ -11,6 +11,7 @@ namespace Nullean.UserOrdersApi.UsersLogic
         private readonly IUsersDao _dao;
 
         private readonly string Ex_UserNotFound = "Пользователь не найден";
+        private readonly string Ex_UsernameExists = "Пользователь с таким именем уже зарегистрирован";
         private readonly string Ex_PassNotMatch = "Неверный пароль";
 
         public UsersBll(IUsersDao dao)
@@ -23,6 +24,23 @@ namespace Nullean.UserOrdersApi.UsersLogic
             var response = new Response<User>();
             try
             {
+                var existingUserResponse = await _dao.GetUserByName(user.Username);
+
+                if (existingUserResponse.ResponseBody != null || (existingUserResponse.Errors?.Any() ?? false)) {
+                    response.Errors = new List<Error>()
+                    {
+                        new Error() { Message = Ex_UsernameExists }
+                    };
+                    if (existingUserResponse.Errors != null)
+                    {
+                        foreach (var err in existingUserResponse.Errors)
+                        {
+                            response.Errors.Add(err);
+                        }
+                    }
+                    return response;
+                }
+
                 user.Id = Guid.NewGuid();
                 user.Password = GetPasswordHash(user.Password);
 
@@ -33,6 +51,7 @@ namespace Nullean.UserOrdersApi.UsersLogic
                 }
                 else
                 {
+                    if (user.Orders == null) user.Orders = new List<Order>();
                     response.ResponseBody = user;
                 }
             }
@@ -58,6 +77,7 @@ namespace Nullean.UserOrdersApi.UsersLogic
                     var user = res.ResponseBody;
                     if (user != null)
                     {
+                        if (user.Orders == null) user.Orders = new List<Order>();
                         user.Orders = user.Orders.Select(
                             o =>
                             {
@@ -127,7 +147,9 @@ namespace Nullean.UserOrdersApi.UsersLogic
                         }
                         else
                         {
-                            response.ResponseBody = res.ResponseBody;
+                            var user = res.ResponseBody;
+                            if (user.Orders == null) user.Orders = new List<Order>();
+                            response.ResponseBody = user;
                         }
                     }
                 }

@@ -8,6 +8,5 @@ namespace Nullean.UserOrdersApi.WebApi.Models
         public string Username { get; set; }
         [Required(ErrorMessage = "Please enter Password")]
         public string Password { get; set; }
-        public string? ReturnUrl { get; set; }
     }
 }

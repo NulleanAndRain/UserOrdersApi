@@ -12,6 +12,5 @@ namespace Nullean.UserOrdersApi.WebApi.Models
         [Required]
         [Compare(nameof(Password))]
         public string PasswordRepeat { get; set; }
-        public string? ReturnUrl { get; set; }
     }
 }

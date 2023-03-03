@@ -29,9 +29,9 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         }
 
         [HttpGet("/GetUserInfo")]
-        [Authorize(Policy = Constants.RoleNames.User)]
         [ProducesResponseType(typeof(UserModel), 200)]
         [ProducesResponseType(typeof(Error), 400)]
+        [ProducesResponseType(typeof(StatusCodeResult), 404)]
         public async Task<IActionResult> GetUserInfo([FromQuery] Guid id)
         {
             var res = await _users.GetUserDetials(id);
@@ -62,22 +62,21 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
 
             var user = res.ResponseBody;
 
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(USER_ID_FIELD, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
-            var claimIdentity = new ClaimsIdentity(claims, "Cookie");
-            var claimPrincipal = new ClaimsPrincipal(claimIdentity);
-            await HttpContext.SignInAsync("Cookie", claimPrincipal);
-
-            if (res.Errors?.Any() ?? false)
+            if (res.Errors?.Any() ?? false )
             {
                 return BadRequest(res.Errors);
             }
             else
             {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(USER_ID_FIELD, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+                var claimIdentity = new ClaimsIdentity(claims, "Cookie");
+                var claimPrincipal = new ClaimsPrincipal(claimIdentity);
+                await HttpContext.SignInAsync("Cookie", claimPrincipal);
                 return Ok(MapUser(user));
             } 
         }
@@ -101,12 +100,23 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             }
             else
             {
+                var user = res.ResponseBody;
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(USER_ID_FIELD, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+                var claimIdentity = new ClaimsIdentity(claims, "Cookie");
+                var claimPrincipal = new ClaimsPrincipal(claimIdentity);
+                await HttpContext.SignInAsync("Cookie", claimPrincipal);
                 return Ok(MapUser(res.ResponseBody));
             }
         }
 
         [HttpPost("/LogOut")]
-        [ProducesResponseType(typeof(IEnumerable<Product>), 200)]
+        [ProducesResponseType(typeof(OkResult), 200)]
+        [ProducesResponseType(typeof(StatusCodeResult), 404)]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync("Cookie");
@@ -116,6 +126,7 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         [HttpPost("/AddTestOrder")]
         [ProducesResponseType(typeof(OkResult), 200)]
         [ProducesResponseType(typeof(Error), 400)]
+        [ProducesResponseType(typeof(StatusCodeResult), 404)]
         public async Task<IActionResult> AddTestOrder()
         {
             var userId = Guid.Parse(User.Claims.SingleOrDefault(cl => cl.Type == USER_ID_FIELD).Value);
@@ -162,10 +173,10 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         /// <param name="searchString">Products name to find</param>
         /// <param name="sortByPriceMode">[Optional] sort by price: true for ascending, false for descending, no param for no sorting</param>
         [AllowAnonymous]
-        [HttpGet("/SearchProduct")]
+        [HttpGet("/SearchProducts")]
         [ProducesResponseType(typeof(IEnumerable<Product>), 200)]
         [ProducesResponseType(typeof(Error), 400)]
-        public async Task<IActionResult> SearchProductByName([FromQuery]string searchString, bool? sortByPriceMode)
+        public async Task<IActionResult> SearchProductsByName([FromQuery]string searchString, bool? sortByPriceMode)
         {
             var res = await _search.SearchProductsByName(searchString);
 
@@ -191,10 +202,11 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             }
         }
 
-        [Authorize(Policy = Constants.RoleNames.Admin)]
-        [HttpGet("/SearchUser")]
+        [Authorize(Roles = Constants.RoleNames.Admin)]
+        [HttpGet("/SearchUsers")]
         [ProducesResponseType(typeof(IEnumerable<UserModel>), 200)]
         [ProducesResponseType(typeof(Error), 400)]
+        [ProducesResponseType(typeof(StatusCodeResult), 404)]
         public async Task<IActionResult> SearchUsersByName([FromQuery]string searchString)
         {
             var res = await _search.SearchUsersByName(searchString);
@@ -215,7 +227,7 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             {
                 Id = user.Id,
                 Username = user.Username,
-                Orders = user.Orders,
+                Orders = user.Orders ?? new List<Order>(),
                 OrdersCount = user.TotalOrdersCount,
                 OrdersTotalPrice = user.TotalOrdersPrice,
             };

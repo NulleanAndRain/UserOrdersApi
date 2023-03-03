@@ -3,6 +3,7 @@
 namespace Nullean.UserOrdersApi.EFContext.EfEntities
 {
     [Index(nameof(Username), IsUnique = true)]
+    [PrimaryKey(nameof(UserId))]
     public class UserEF
     {
         public Guid UserId { get; set; }

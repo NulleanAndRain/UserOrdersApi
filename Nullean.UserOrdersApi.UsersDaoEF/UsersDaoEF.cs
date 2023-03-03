@@ -66,29 +66,6 @@ namespace Nullean.UserOrdersApi.UsersDaoEF
             return response;
         }
 
-        public async Task<Response<IEnumerable<User>>> GetUsersByName(string username)
-        {
-            var response = new Response<IEnumerable<User>>();
-            try
-            {
-                var users = await _ctx.Users
-                    .Where(u => u.Username.Contains(username))
-                    .MapUsers()
-                    .ToListAsync();
-                response.ResponseBody = users;
-            }
-            catch (Exception ex)
-            {
-                response.Errors = new List<Error>()
-                {
-                    new Error
-                    {
-                        Message = ex.Message
-                    }
-                };
-            }
-            return response;
-        }
         public async Task<Response<User>> GetUserByName(string username)
         {
             var response = new Response<User>();
