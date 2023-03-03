@@ -30,6 +30,8 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
 
         [HttpGet("/GetUserInfo")]
         [Authorize(Policy = Constants.RoleNames.User)]
+        [ProducesResponseType(typeof(UserModel), 200)]
+        [ProducesResponseType(typeof(Error), 400)]
         public async Task<IActionResult> GetUserInfo([FromQuery] Guid id)
         {
             var res = await _users.GetUserDetials(id);
@@ -52,6 +54,8 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("/LogIn")]
+        [ProducesResponseType(typeof(UserModel), 200)]
+        [ProducesResponseType(typeof(Error), 400)]
         public async Task<IActionResult> LogIn([FromBody]LogInModel model)
         {
             var res = await _users.LoginUser(model.Username, model.Password);
@@ -80,6 +84,8 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("/SignUp")]
+        [ProducesResponseType(typeof(UserModel), 200)]
+        [ProducesResponseType(typeof(Error), 400)]
         public async Task<IActionResult> SignUp([FromBody]SignUpModel model)
         {
             var res = await _users.CreateUser(new User
@@ -100,12 +106,16 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         }
 
         [HttpPost("/LogOut")]
-        public async Task LogOut()
+        [ProducesResponseType(typeof(IEnumerable<Product>), 200)]
+        public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync("Cookie");
+            return Ok();
         }
 
         [HttpPost("/AddTestOrder")]
+        [ProducesResponseType(typeof(OkResult), 200)]
+        [ProducesResponseType(typeof(Error), 400)]
         public async Task<IActionResult> AddTestOrder()
         {
             var userId = Guid.Parse(User.Claims.SingleOrDefault(cl => cl.Type == USER_ID_FIELD).Value);
@@ -153,6 +163,8 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         /// <param name="sortByPriceMode">[Optional] sort by price: true for ascending, false for descending, no param for no sorting</param>
         [AllowAnonymous]
         [HttpGet("/SearchProduct")]
+        [ProducesResponseType(typeof(IEnumerable<Product>), 200)]
+        [ProducesResponseType(typeof(Error), 400)]
         public async Task<IActionResult> SearchProductByName([FromQuery]string searchString, bool? sortByPriceMode)
         {
             var res = await _search.SearchProductsByName(searchString);
@@ -181,6 +193,8 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
 
         [Authorize(Policy = Constants.RoleNames.Admin)]
         [HttpGet("/SearchUser")]
+        [ProducesResponseType(typeof(IEnumerable<UserModel>), 200)]
+        [ProducesResponseType(typeof(Error), 400)]
         public async Task<IActionResult> SearchUsersByName([FromQuery]string searchString)
         {
             var res = await _search.SearchUsersByName(searchString);
