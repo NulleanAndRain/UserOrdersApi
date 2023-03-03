@@ -2,7 +2,7 @@
 
 namespace Nullean.UserOrdersApi.UsersDaoInterface
 {
-    public interface IUserDao
+    public interface IUsersDao
     {
         public Task<Response<User>> GetUserByName(string username);
         public Task<Response> CreateUser(User user);
