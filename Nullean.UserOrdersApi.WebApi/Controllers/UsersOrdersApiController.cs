@@ -146,9 +146,14 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Returns all products with matching name (including particulary match)
+        /// </summary>
+        /// <param name="searchString">Products name to find</param>
+        /// <param name="sortByPriceMode">[Optional] sort by price: true for ascending, false for descending, no param for no sorting</param>
         [AllowAnonymous]
         [HttpGet("/SearchProduct")]
-        public async Task<IActionResult> SearchProductByName([FromQuery]string searchString)
+        public async Task<IActionResult> SearchProductByName([FromQuery]string searchString, bool? sortByPriceMode)
         {
             var res = await _search.SearchProductsByName(searchString);
 
@@ -158,7 +163,19 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             }
             else
             {
-                return Ok(res.ResponseBody);
+                var products = res.ResponseBody;
+                if (sortByPriceMode.HasValue)
+                {
+                    if (sortByPriceMode.Value)
+                    {
+                        products = products.OrderBy(p => p.Price);
+                    }
+                    else
+                    {
+                        products = products.OrderByDescending(p => p.Price);
+                    }
+                }
+                return Ok(products);
             }
         }
 
