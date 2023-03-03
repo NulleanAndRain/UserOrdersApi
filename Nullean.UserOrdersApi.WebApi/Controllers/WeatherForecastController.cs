@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Nullean.PL.UserOrdersApi.Controllers
+namespace Nullean.UserOrdersApi.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

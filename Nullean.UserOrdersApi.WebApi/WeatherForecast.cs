@@ -1,4 +1,4 @@
-namespace Nullean.PL.UserOrdersApi
+namespace Nullean.UserOrdersApi.WebApi
 {
     public class WeatherForecast
     {
