@@ -7,5 +7,6 @@ namespace Nullean.UserOrdersApi.UsersDaoInterface
         public Task<Response<User>> GetUserByName(string username);
         public Task<Response> CreateUser(User user);
         public Task<Response<UserDetailed>> GetUserDetials(Guid Id);
+        public Task<Response<IEnumerable<User>>> GetAllUsers();
     }
 }

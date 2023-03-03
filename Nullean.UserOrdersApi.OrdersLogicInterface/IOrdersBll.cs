@@ -1,8 +1,8 @@
 ﻿using Nullean.UserOrdersApi.Entities;
 
-namespace Nullean.UserOrdersApi.SearchLogicInterface
+namespace Nullean.UserOrdersApi.OrdersLogicInterface
 {
-    public interface IOrderBll
+    public interface IOrdersBll
     {
         public Task<Response<IEnumerable<Order>>> GetUserOrders(Guid id);
         public Task<Response> AddOrder(Order order, Guid userId);

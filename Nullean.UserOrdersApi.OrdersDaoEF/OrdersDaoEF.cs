@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nullean.UserOrdersApi.OrdersDao;
+using Nullean.UserOrdersApi.OrdersDaoInterface;
 using Nullean.UserOrdersApi.EFContext;
 using Nullean.UserOrdersApi.Entities;
+using Nullean.UserOrdersApi.EFContext.EfEntities;
 
 using OrderModel = Nullean.UserOrdersApi.Entities.Order;
 using ProductModel = Nullean.UserOrdersApi.Entities.Product;
@@ -76,9 +77,36 @@ namespace Nullean.UserOrdersApi.OrdersDaoEF
             return response;
         }
 
-        public async Task<Response<IEnumerable<Order>>> GetUserOrders(Guid id)
+        public async Task<Response<IEnumerable<ProductModel>>> GetAllProducts()
         {
-            var response = new Response<IEnumerable<Order>>();
+            var response = new Response<IEnumerable<ProductModel>>();
+            try
+            {
+                var products = _ctx.Products
+                    .Select(p => new ProductModel
+                    {
+                        Price = p.Price,
+                        Name = p.Name,
+                        Id = p.ProductId,
+                    });
+                response.ResponseBody = await products.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                response.Errors = new List<Error>()
+                {
+                    new Error
+                    {
+                        Message = ex.Message,
+                    }
+                };
+            }
+            return response;
+        }
+
+        public async Task<Response<IEnumerable<OrderModel>>> GetUserOrders(Guid id)
+        {
+            var response = new Response<IEnumerable<OrderModel>>();
             try
             {
                 var orders = _ctx.Orders

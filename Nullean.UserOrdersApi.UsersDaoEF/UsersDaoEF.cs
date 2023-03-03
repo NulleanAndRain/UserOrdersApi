@@ -48,6 +48,34 @@ namespace Nullean.UserOrdersApi.UsersDaoEF
             return response;
         }
 
+        public async Task<Response<IEnumerable<UserModel>>> GetAllUsers()
+        {
+            var response = new Response<IEnumerable<UserModel>>();
+            try
+            {
+                var users = _ctx.Users
+                    .Select(u => new UserModel
+                    {
+                        Id = u.UserId,
+                        Username = u.Username,
+                        Role = u.Role,
+                        Password = u.Password,
+                    });
+                response.ResponseBody = await users.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                response.Errors = new List<Error>()
+                {
+                    new Error
+                    {
+                        Message = ex.Message,
+                    }
+                };
+            }
+            return response;
+        }
+
         public async Task<Response<UserModel>> GetUserByName(string username)
         {
             var response = new Response<UserModel>();
