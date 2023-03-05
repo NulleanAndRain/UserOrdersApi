@@ -229,8 +229,9 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         [ProducesResponseType(typeof(OkResult), 200)]
         public async Task<IActionResult> SendAMessage([FromBody]Message msg)
         {
-            await _mq.SendAMessage(msg.message);
-            return Ok();
+            var token = new CancellationTokenSource().Token;
+            var result = await _mq.SendAMessage(msg.message, token);
+            return Ok(result);
         }
 
         private UserModel MapUser(User user)

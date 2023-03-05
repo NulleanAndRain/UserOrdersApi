@@ -2,6 +2,6 @@
 {
     public interface IRabbitTest
     {
-        public Task SendAMessage(string message);
+        public Task<string> SendAMessage(string message, CancellationToken cancellationToken = default);
     }
 }

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Nullean.UserOrdersApi.EFContext;
-
+using Nullean.UserOrdersApi.Entities;
 using Nullean.UserOrdersApi.UsersDaoEF;
 using Nullean.UserOrdersApi.UsersDaoInterface;
 using Nullean.UserOrdersApi.UsersLogic;
@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(cfg =>
 {
-    cfg.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    cfg.UseSqlServer(builder.Configuration.GetConnectionString(ConfigConstants.SqlConnectionName));
 });
 
 builder.Services.AddControllers();
