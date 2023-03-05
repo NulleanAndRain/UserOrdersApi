@@ -53,13 +53,7 @@ namespace Nullean.UserOrdersApi.SearchLogic
                 {
                     usersResponse.ResponseBody = res.ResponseBody
                         .Where(u => u.Username.ToLower().Contains(name.ToLower()))
-                        .Select(u =>
-                        {
-                            if (u.Orders == null) u.Orders = new List<Order>();
-                            u.TotalOrdersPrice = u.Orders.Sum(o => o.TotalPrice);
-                            u.TotalOrdersCount = u.Orders.Count();
-                            return u;
-                        });
+                        .Select(CalculateUserModel);
                 }
             }
             catch (Exception ex)
@@ -86,6 +80,26 @@ namespace Nullean.UserOrdersApi.SearchLogic
                         e
                     };
             }
+        }
+
+        private User CalculateUserModel(User user)
+        {
+            if (user.Orders != null)
+            {
+                foreach (var order in user.Orders)
+                {
+                    order.TotalCount = order.Products.Count();
+                    order.TotalPrice = order.Products.Sum(p => p.Price);
+                }
+                user.TotalOrdersCount = user.Orders.Count();
+                user.TotalOrdersPrice = user.Orders.Sum(o => o.TotalPrice);
+            }
+            else
+            {
+                user.TotalOrdersCount = 0;
+                user.TotalOrdersPrice = 0;
+            }
+            return user;
         }
     }
 }

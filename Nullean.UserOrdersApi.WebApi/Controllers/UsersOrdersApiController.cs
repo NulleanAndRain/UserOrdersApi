@@ -7,7 +7,6 @@ using Nullean.UserOrdersApi.SearchLogicInterface;
 using Nullean.UserOrdersApi.Entities;
 using Nullean.UserOrdersApi.WebApi.Models;
 using System.Security.Claims;
-using Nullean.UserOrdersApi.WebApi.Services;
 using Nullean.UserOrdersApi.Entities.ServiceEntities;
 
 namespace Nullean.UserOrdersApi.WebApi.Controllers
@@ -37,11 +36,6 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         public async Task<IActionResult> GetUserInfo([FromQuery] Guid id)
         {
             var res = await _users.GetUserDetials(id);
-
-            if (res.Errors?.Any() ?? false)
-            {
-                await LogOut();
-            }
 
             if (res.Errors?.Any() ?? false)
             {
@@ -125,8 +119,11 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Adds order with some products to current authorized user
+        /// </summary>
         [HttpPost("/AddTestOrder")]
-        [ProducesResponseType(typeof(OkResult), 200)]
+        [ProducesResponseType(typeof(User), 200)]
         [ProducesResponseType(typeof(Error), 400)]
         [ProducesResponseType(typeof(StatusCodeResult), 404)]
         public async Task<IActionResult> AddTestOrder()
@@ -166,7 +163,7 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
                 return BadRequest(res.Errors);
             }
 
-            return Ok();
+            return await GetUserInfo(userId);
         }
 
         /// <summary>

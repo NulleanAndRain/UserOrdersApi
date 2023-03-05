@@ -52,7 +52,7 @@ namespace Nullean.UserOrdersApi.UsersLogic
                 else
                 {
                     if (user.Orders == null) user.Orders = new List<Order>();
-                    response.ResponseBody = user;
+                    response.ResponseBody = CalculateUserModel(user);
                 }
             }
             catch (Exception ex)
@@ -77,18 +77,7 @@ namespace Nullean.UserOrdersApi.UsersLogic
                     var user = res.ResponseBody;
                     if (user != null)
                     {
-                        if (user.Orders == null) user.Orders = new List<Order>();
-                        user.Orders = user.Orders.Select(
-                            o =>
-                            {
-                                o.TotalCount = o.Products.Count();
-                                o.TotalPrice = o.Products.Sum(p => p.Price);
-                                return o;
-                            }
-                        );
-                        user.TotalOrdersCount = user.Orders.Count();
-                        user.TotalOrdersPrice = user.Orders.Sum(o => o.TotalPrice);
-                        response.ResponseBody = user;
+                        response.ResponseBody = CalculateUserModel(user);
                     }
                     else
                     {
@@ -149,7 +138,7 @@ namespace Nullean.UserOrdersApi.UsersLogic
                         {
                             var user = res.ResponseBody;
                             if (user.Orders == null) user.Orders = new List<Order>();
-                            response.ResponseBody = user;
+                            response.ResponseBody = CalculateUserModel(user);
                         }
                     }
                 }
@@ -160,6 +149,7 @@ namespace Nullean.UserOrdersApi.UsersLogic
             }
             return response;
         }
+
 
         private void HandleExeption(Response response, Exception ex)
         {
@@ -185,6 +175,26 @@ namespace Nullean.UserOrdersApi.UsersLogic
             var data = Encoding.ASCII.GetBytes(pass);
             data = SHA256.HashData(data);
             return Encoding.ASCII.GetString(data);
+        }
+
+        private User CalculateUserModel(User user)
+        {
+            if (user.Orders != null)
+            {
+                foreach (var order in user.Orders)
+                {
+                    order.TotalCount = order.Products.Count();
+                    order.TotalPrice = order.Products.Sum(p => p.Price);
+                }
+                user.TotalOrdersCount = user.Orders.Count();
+                user.TotalOrdersPrice = user.Orders.Sum(o => o.TotalPrice);
+            }
+            else
+            {
+                user.TotalOrdersCount = 0;
+                user.TotalOrdersPrice = 0;
+            }
+            return user;
         }
     }
 }
