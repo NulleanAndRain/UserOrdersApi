@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Nullean.UserOrdersApi.UsersLogic
 {
-    public class UsersBll : IUserBll
+    public class UsersBll : IUsersBll
     {
         private readonly IUsersDao _dao;
 

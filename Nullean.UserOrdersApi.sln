@@ -7,35 +7,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nullean.UserOrdersApi.PL", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nullean.UserOrdersApi.Entities", "Nullean.UserOrdersApi.Entities", "{2EFDDB8E-B50E-4414-8D6C-732DF643E3E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.Entities", "Nullean.UserOrdersApi.Entities\Nullean.UserOrdersApi.Entities.csproj", "{BF1FEF41-7093-4DAC-9EF9-2A85E388C119}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.Entities", "Nullean.UserOrdersApi.Entities\Nullean.UserOrdersApi.Entities.csproj", "{BF1FEF41-7093-4DAC-9EF9-2A85E388C119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.WebApi", "Nullean.UserOrdersApi.WebApi\Nullean.UserOrdersApi.WebApi.csproj", "{46A15EC4-45EB-4479-85F8-7AA4F0AE8485}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.WebApi", "Nullean.UserOrdersApi.WebApi\Nullean.UserOrdersApi.WebApi.csproj", "{46A15EC4-45EB-4479-85F8-7AA4F0AE8485}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nullean.UserOrdersApi.BLL", "Nullean.UserOrdersApi.BLL", "{0A3057F0-B249-452C-9BFC-EADB056344D3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nullean.UserOrdersApi.DAL", "Nullean.UserOrdersApi.DAL", "{3A8906F9-9A78-49F1-A809-E8FEFC6EC4E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.UsersLogicInterface", "Nullean.UserOrdersApi.UsersLogicInterface\Nullean.UserOrdersApi.UsersLogicInterface.csproj", "{EC03A6A1-80CE-4395-B4BA-B390CBA22440}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.UsersLogicInterface", "Nullean.UserOrdersApi.UsersLogicInterface\Nullean.UserOrdersApi.UsersLogicInterface.csproj", "{EC03A6A1-80CE-4395-B4BA-B390CBA22440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.OrdersLogicInterface", "Nullean.UserOrdersApi.OrdersLogicInterface\Nullean.UserOrdersApi.OrdersLogicInterface.csproj", "{BF934836-BFB9-4278-B3AB-CD3593A5DDE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.OrdersLogicInterface", "Nullean.UserOrdersApi.OrdersLogicInterface\Nullean.UserOrdersApi.OrdersLogicInterface.csproj", "{BF934836-BFB9-4278-B3AB-CD3593A5DDE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.SearchLogicInterface", "Nullean.UserOrdersApi.SearchLogicInterface\Nullean.UserOrdersApi.SearchLogicInterface.csproj", "{B22A085D-08E2-4293-87D2-14F65C2A6708}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.SearchLogicInterface", "Nullean.UserOrdersApi.SearchLogicInterface\Nullean.UserOrdersApi.SearchLogicInterface.csproj", "{B22A085D-08E2-4293-87D2-14F65C2A6708}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.UsersDaoInterface", "Nullean.UserOrdersApi.UsersDaoInterface\Nullean.UserOrdersApi.UsersDaoInterface.csproj", "{32A9FA91-ACB3-45F9-A7CF-39D2B5AFD8F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.UsersDaoInterface", "Nullean.UserOrdersApi.UsersDaoInterface\Nullean.UserOrdersApi.UsersDaoInterface.csproj", "{32A9FA91-ACB3-45F9-A7CF-39D2B5AFD8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.OrdersDaoInterface", "Nullean.UserOrdersApi.OrdersDao\Nullean.UserOrdersApi.OrdersDaoInterface.csproj", "{D0CC8025-3A09-4516-BB51-D308D40E79EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.OrdersDaoInterface", "Nullean.UserOrdersApi.OrdersDao\Nullean.UserOrdersApi.OrdersDaoInterface.csproj", "{D0CC8025-3A09-4516-BB51-D308D40E79EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.UsersDaoEF", "Nullean.UserOrdersApi.UsersDaoEF\Nullean.UserOrdersApi.UsersDaoEF.csproj", "{9262C5DA-5D77-43B6-999C-5940F019D77C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.UsersDaoEF", "Nullean.UserOrdersApi.UsersDaoEF\Nullean.UserOrdersApi.UsersDaoEF.csproj", "{9262C5DA-5D77-43B6-999C-5940F019D77C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.OrdersDaoEF", "Nullean.UserOrdersApi.OrdersDaoEF\Nullean.UserOrdersApi.OrdersDaoEF.csproj", "{BB68446F-8CA8-4474-9064-585717F1C876}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.OrdersDaoEF", "Nullean.UserOrdersApi.OrdersDaoEF\Nullean.UserOrdersApi.OrdersDaoEF.csproj", "{BB68446F-8CA8-4474-9064-585717F1C876}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.EFContext", "Nullean.UserOrdersApi.EFContext\Nullean.UserOrdersApi.EFContext.csproj", "{DB2E4566-3DB7-4D5B-83FA-70C8C62AD1E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.EFContext", "Nullean.UserOrdersApi.EFContext\Nullean.UserOrdersApi.EFContext.csproj", "{DB2E4566-3DB7-4D5B-83FA-70C8C62AD1E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.OrdersLogic", "Nullean.UserOrdersApi.OrdersLogic\Nullean.UserOrdersApi.OrdersLogic.csproj", "{AB193BC1-1220-4DBA-BFCD-1679DABA3AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.OrdersLogic", "Nullean.UserOrdersApi.OrdersLogic\Nullean.UserOrdersApi.OrdersLogic.csproj", "{AB193BC1-1220-4DBA-BFCD-1679DABA3AF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.UsersLogic", "Nullean.UserOrdersApi.UsersLogic\Nullean.UserOrdersApi.UsersLogic.csproj", "{4B0705F8-3153-4869-BB31-9136B92435CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.UsersLogic", "Nullean.UserOrdersApi.UsersLogic\Nullean.UserOrdersApi.UsersLogic.csproj", "{4B0705F8-3153-4869-BB31-9136B92435CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.SearchLogic", "Nullean.UserOrdersApi.SearchLogic\Nullean.UserOrdersApi.SearchLogic.csproj", "{DF6B1040-F508-46BD-B43F-EBB665067F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nullean.UserOrdersApi.SearchLogic", "Nullean.UserOrdersApi.SearchLogic\Nullean.UserOrdersApi.SearchLogic.csproj", "{DF6B1040-F508-46BD-B43F-EBB665067F83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nullean.UserOrdersApi.Services", "Nullean.UserOrdersApi.Services", "{A2379AE8-D91E-429D-9272-04ED190C9635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullean.UserOrdersApi.UsersService", "Nullean.UserOrdersApi.UsersService\Nullean.UserOrdersApi.UsersService.csproj", "{4AD07DDD-7334-45AE-A819-66E4CE993D8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +99,10 @@ Global
 		{DF6B1040-F508-46BD-B43F-EBB665067F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF6B1040-F508-46BD-B43F-EBB665067F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF6B1040-F508-46BD-B43F-EBB665067F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AD07DDD-7334-45AE-A819-66E4CE993D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AD07DDD-7334-45AE-A819-66E4CE993D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AD07DDD-7334-45AE-A819-66E4CE993D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AD07DDD-7334-45AE-A819-66E4CE993D8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +121,7 @@ Global
 		{AB193BC1-1220-4DBA-BFCD-1679DABA3AF0} = {0A3057F0-B249-452C-9BFC-EADB056344D3}
 		{4B0705F8-3153-4869-BB31-9136B92435CA} = {0A3057F0-B249-452C-9BFC-EADB056344D3}
 		{DF6B1040-F508-46BD-B43F-EBB665067F83} = {0A3057F0-B249-452C-9BFC-EADB056344D3}
+		{4AD07DDD-7334-45AE-A819-66E4CE993D8D} = {A2379AE8-D91E-429D-9272-04ED190C9635}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0DB85E19-316F-4717-AA8A-2722C8CC2D92}

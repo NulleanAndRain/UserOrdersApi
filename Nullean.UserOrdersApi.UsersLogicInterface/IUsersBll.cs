@@ -2,7 +2,7 @@
 
 namespace Nullean.UserOrdersApi.UsersLogicInterface
 {
-    public interface IUserBll
+    public interface IUsersBll
     {
         public Task<Response<User>> LoginUser(string username, string password);
         public Task<Response<User>> CreateUser(User user);

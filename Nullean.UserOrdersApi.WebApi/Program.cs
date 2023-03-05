@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Reflection;
 
 using Nullean.UserOrdersApi.UsersLogicInterface;
 using Nullean.UserOrdersApi.OrdersLogicInterface;
@@ -17,7 +18,8 @@ using Nullean.UserOrdersApi.EFContext;
 
 using Nullean.UserOrdersApi.Entities;
 using ModelConstants = Nullean.UserOrdersApi.WebApi.Models.Constants;
-using System.Reflection;
+
+using Nullean.UserOrdersApi.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,9 +32,11 @@ builder.Services.AddDbContext<AppDbContext>(cfg =>
 builder.Services.AddScoped<IOrdersDao, OrdersDaoEF>();
 builder.Services.AddScoped<IUsersDao, UsersDaoEF>();
 
-builder.Services.AddScoped<IUserBll, UsersBll>();
+builder.Services.AddScoped<IUsersBll, UsersBll>();
 builder.Services.AddScoped<IOrdersBll, OrdersBll>();
 builder.Services.AddScoped<ISearchBll, SearchBll>();
+
+builder.Services.AddScoped<IRabbitTest, RabbitTest>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -101,7 +105,7 @@ using (var scope = app.Services.CreateScope())
     ctx.Database.EnsureCreated();
 
     AddEntries(
-        scope.ServiceProvider.GetService<IUserBll>(),
+        scope.ServiceProvider.GetService<IUsersBll>(),
         scope.ServiceProvider.GetService<IOrdersBll>()
     );
 }
@@ -109,7 +113,7 @@ using (var scope = app.Services.CreateScope())
 app.Run();
 
 
-void AddEntries(IUserBll _users, IOrdersBll _orders)
+void AddEntries(IUsersBll _users, IOrdersBll _orders)
 {
 
     var admin = new User

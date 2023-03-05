@@ -7,6 +7,7 @@ using Nullean.UserOrdersApi.SearchLogicInterface;
 using Nullean.UserOrdersApi.Entities;
 using Nullean.UserOrdersApi.WebApi.Models;
 using System.Security.Claims;
+using Nullean.UserOrdersApi.WebApi.Services;
 
 namespace Nullean.UserOrdersApi.WebApi.Controllers
 {
@@ -15,17 +16,19 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
     [Route("api/[controller]")]
     public class UsersOrdersApiController : Controller
     {
-        private readonly IUserBll _users;
+        private readonly IUsersBll _users;
         private readonly IOrdersBll _orders;
         private readonly ISearchBll _search;
+        private readonly IRabbitTest _mq;
 
         private const string USER_ID_FIELD = "user_id";
 
-        public UsersOrdersApiController(IUserBll users, IOrdersBll orders, ISearchBll search)
+        public UsersOrdersApiController(IUsersBll users, IOrdersBll orders, ISearchBll search, IRabbitTest rabbitTest)
         {
             _users = users;
             _orders = orders;
             _search = search;
+            _mq = rabbitTest;
         }
 
         [HttpGet("/GetUserInfo")]
@@ -221,6 +224,15 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpPost("/SendAMessage")]
+        [ProducesResponseType(typeof(OkResult), 200)]
+        public async Task<IActionResult> SendAMessage([FromBody]Message msg)
+        {
+            await _mq.SendAMessage(msg.message);
+            return Ok();
+        }
+
         private UserModel MapUser(User user)
         {
             return new UserModel
@@ -232,5 +244,10 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
                 OrdersTotalPrice = user.TotalOrdersPrice,
             };
         }
+    }
+
+    public class Message
+    {
+        public string message { get; set; }
     }
 }
