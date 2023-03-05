@@ -8,6 +8,7 @@ using Nullean.UserOrdersApi.Entities;
 using Nullean.UserOrdersApi.WebApi.Models;
 using System.Security.Claims;
 using Nullean.UserOrdersApi.WebApi.Services;
+using Nullean.UserOrdersApi.Entities.ServiceEntities;
 
 namespace Nullean.UserOrdersApi.WebApi.Controllers
 {
@@ -19,16 +20,14 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
         private readonly IUsersBll _users;
         private readonly IOrdersBll _orders;
         private readonly ISearchBll _search;
-        private readonly IRabbitTest _mq;
 
         private const string USER_ID_FIELD = "user_id";
 
-        public UsersOrdersApiController(IUsersBll users, IOrdersBll orders, ISearchBll search, IRabbitTest rabbitTest)
+        public UsersOrdersApiController(IUsersBll users, IOrdersBll orders, ISearchBll search)
         {
             _users = users;
             _orders = orders;
             _search = search;
-            _mq = rabbitTest;
         }
 
         [HttpGet("/GetUserInfo")]
@@ -222,16 +221,6 @@ namespace Nullean.UserOrdersApi.WebApi.Controllers
             {
                 return BadRequest(res.Errors);
             }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("/SendAMessage")]
-        [ProducesResponseType(typeof(OkResult), 200)]
-        public async Task<IActionResult> SendAMessage([FromBody]Message msg)
-        {
-            var token = new CancellationTokenSource().Token;
-            var result = await _mq.SendAMessage(msg.message, token);
-            return Ok(result);
         }
 
         private UserModel MapUser(User user)

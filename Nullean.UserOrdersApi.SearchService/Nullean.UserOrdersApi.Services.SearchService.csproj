@@ -9,16 +9,19 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Nullean.UserOrdersApi.Entities\Nullean.UserOrdersApi.Entities.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.OrdersDaoEF\Nullean.UserOrdersApi.OrdersDaoEF.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.OrdersDao\Nullean.UserOrdersApi.OrdersDaoInterface.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.SearchLogicInterface\Nullean.UserOrdersApi.SearchLogicInterface.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.SearchLogic\Nullean.UserOrdersApi.SearchLogic.csproj" />
     <ProjectReference Include="..\Nullean.UserOrdersApi.UsersDaoEF\Nullean.UserOrdersApi.UsersDaoEF.csproj" />
     <ProjectReference Include="..\Nullean.UserOrdersApi.UsersDaoInterface\Nullean.UserOrdersApi.UsersDaoInterface.csproj" />
-    <ProjectReference Include="..\Nullean.UserOrdersApi.UsersLogicInterface\Nullean.UserOrdersApi.UsersLogicInterface.csproj" />
-    <ProjectReference Include="..\Nullean.UserOrdersApi.UsersLogic\Nullean.UserOrdersApi.UsersLogic.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Nullean.UserOrdersApi.EFContext;
 using Nullean.UserOrdersApi.Entities.Constants;
+using Nullean.UserOrdersApi.OrdersDaoEF;
+using Nullean.UserOrdersApi.OrdersDaoInterface;
+using Nullean.UserOrdersApi.SearchLogic;
+using Nullean.UserOrdersApi.SearchLogicInterface;
+using Nullean.UserOrdersApi.Services.SearchService;
 using Nullean.UserOrdersApi.UsersDaoEF;
 using Nullean.UserOrdersApi.UsersDaoInterface;
-using Nullean.UserOrdersApi.UsersLogic;
-using Nullean.UserOrdersApi.UsersLogicInterface;
-using Nullean.UserOrdersApi.Services.UsersService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +22,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IUsersBll, UsersBll>();
+builder.Services.AddScoped<ISearchBll, SearchBll>();
+builder.Services.AddScoped<IOrdersDao, OrdersDaoEF>();
 builder.Services.AddScoped<IUsersDao, UsersDaoEF>();
-builder.Services.AddHostedService<UsersService>();
+builder.Services.AddHostedService<SearchService>();
 
 var app = builder.Build();
 

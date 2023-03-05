@@ -1,25 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using System.Reflection;
-
 using Nullean.UserOrdersApi.UsersLogicInterface;
 using Nullean.UserOrdersApi.OrdersLogicInterface;
 using Nullean.UserOrdersApi.SearchLogicInterface;
-
-using Nullean.UserOrdersApi.UsersLogic;
-using Nullean.UserOrdersApi.OrdersLogic;
-using Nullean.UserOrdersApi.SearchLogic;
-
-using Nullean.UserOrdersApi.UsersDaoInterface;
-using Nullean.UserOrdersApi.OrdersDaoInterface;
-using Nullean.UserOrdersApi.UsersDaoEF;
-using Nullean.UserOrdersApi.OrdersDaoEF;
 using Nullean.UserOrdersApi.EFContext;
-
 using Nullean.UserOrdersApi.Entities;
+using Nullean.UserOrdersApi.WebApi.Services;
+using Nullean.UserOrdersApi.Entities.Constants;
+using System.Security.Claims;
+using System.Reflection;
 using ModelConstants = Nullean.UserOrdersApi.WebApi.Models.Constants;
 
-using Nullean.UserOrdersApi.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,14 +19,9 @@ builder.Services.AddDbContext<AppDbContext>(cfg =>
     cfg.UseSqlServer(builder.Configuration.GetConnectionString(ConfigConstants.SqlConnectionName));
 });
 
-builder.Services.AddScoped<IOrdersDao, OrdersDaoEF>();
-builder.Services.AddScoped<IUsersDao, UsersDaoEF>();
-
-builder.Services.AddScoped<IUsersBll, UsersBll>();
-builder.Services.AddScoped<IOrdersBll, OrdersBll>();
-builder.Services.AddScoped<ISearchBll, SearchBll>();
-
-builder.Services.AddScoped<IRabbitTest, RabbitTest>();
+builder.Services.AddScoped<IUsersBll, UserServiceCaller>();
+builder.Services.AddScoped<IOrdersBll, OrdersServiceCaller>();
+builder.Services.AddScoped<ISearchBll, SearchServiceCaller>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -96,7 +81,6 @@ app.UseEndpoints(ep =>
 {
     ep.MapDefaultControllerRoute();
 });
-//app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -115,7 +99,6 @@ app.Run();
 
 void AddEntries(IUsersBll _users, IOrdersBll _orders)
 {
-
     var admin = new User
     {
         Username = "admin",

@@ -1,4 +1,4 @@
-﻿namespace Nullean.UserOrdersApi.Entities
+﻿namespace Nullean.UserOrdersApi.Entities.Constants
 {
     public class ConfigConstants
     {
@@ -7,5 +7,7 @@
 
         public const string QueuesSectionName = "Queues";
         public const string UsersServiceQueue = "UsersServiceQueue";
+        public const string OrdersServiceQueue = "OrdersServiceQueue";
+        public const string SearchServiceQueue = "SearchServiceQueue";
     }
 }

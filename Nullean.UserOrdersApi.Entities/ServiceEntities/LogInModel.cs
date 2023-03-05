@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Nullean.UserOrdersApi.WebApi.Models
+namespace Nullean.UserOrdersApi.Entities.ServiceEntities
 {
     public class LogInModel
     {

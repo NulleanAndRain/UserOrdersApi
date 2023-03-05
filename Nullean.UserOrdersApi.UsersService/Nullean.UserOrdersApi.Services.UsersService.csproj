@@ -4,9 +4,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-      <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,10 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nullean.UserOrdersApi.EFContext\Nullean.UserOrdersApi.EFContext.csproj" />
     <ProjectReference Include="..\Nullean.UserOrdersApi.Entities\Nullean.UserOrdersApi.Entities.csproj" />
-    <ProjectReference Include="..\Nullean.UserOrdersApi.OrdersLogicInterface\Nullean.UserOrdersApi.OrdersLogicInterface.csproj" />
-    <ProjectReference Include="..\Nullean.UserOrdersApi.SearchLogicInterface\Nullean.UserOrdersApi.SearchLogicInterface.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.UsersDaoEF\Nullean.UserOrdersApi.UsersDaoEF.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.UsersDaoInterface\Nullean.UserOrdersApi.UsersDaoInterface.csproj" />
     <ProjectReference Include="..\Nullean.UserOrdersApi.UsersLogicInterface\Nullean.UserOrdersApi.UsersLogicInterface.csproj" />
+    <ProjectReference Include="..\Nullean.UserOrdersApi.UsersLogic\Nullean.UserOrdersApi.UsersLogic.csproj" />
   </ItemGroup>
+
 </Project>

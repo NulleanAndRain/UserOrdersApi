@@ -1,25 +1,24 @@
 ﻿using Nullean.UserOrdersApi.Entities.Constants;
-using Nullean.UserOrdersApi.Entities.ServiceEntities;
-using Nullean.UserOrdersApi.UsersLogicInterface;
-using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Text;
+using RabbitMQ.Client;
 using Newtonsoft.Json;
-using Nullean.UserOrdersApi.Entities;
+using Nullean.UserOrdersApi.Entities.ServiceEntities;
+using System.Text;
+using Nullean.UserOrdersApi.OrdersLogicInterface;
 
-namespace Nullean.UserOrdersApi.Services.UsersService
+namespace Nullean.UserOrdersApi.Services.OrdersService
 {
-    public class UsersService : BackgroundService, IDisposable
+    public class OrdersService : BackgroundService
     {
         private IServiceProvider _serviceProvider;
         private IConnection _connection;
         private IModel _channel;
 
-        public UsersService(IConfiguration config, IServiceProvider serviceProvider)
+        public OrdersService(IConfiguration config, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             var factory = new ConnectionFactory { HostName = config.GetConnectionString(ConfigConstants.RabbitMqConnectionName) };
-            var queue = config.GetSection(ConfigConstants.QueuesSectionName).GetValue<string>(ConfigConstants.UsersServiceQueue);
+            var queue = config.GetSection(ConfigConstants.QueuesSectionName).GetValue<string>(ConfigConstants.OrdersServiceQueue);
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: queue, durable: false, exclusive: false, autoDelete: false, arguments: null);
@@ -56,33 +55,26 @@ namespace Nullean.UserOrdersApi.Services.UsersService
             replyProps.CorrelationId = props.CorrelationId;
 
             var content = Encoding.UTF8.GetString(e.Body.ToArray());
-            string response = null;
+            string response = string.Empty;
 
             using (var scope = _serviceProvider.CreateScope())
             {
-                IUsersBll users = scope.ServiceProvider.GetRequiredService<IUsersBll>();
+                IOrdersBll orders = scope.ServiceProvider.GetRequiredService<IOrdersBll>();
                 var query = JsonConvert.DeserializeObject<RcpQuery>(content);
 
                 switch (query.MethodName)
                 {
-                    case nameof(users.LoginUser):
+                    case nameof(orders.AddOrder):
                         {
-                            var queryData = JsonConvert.DeserializeObject<LogInModel>(query.QueryJson);
-                            var res = await users.LoginUser(queryData.Username, queryData.Password);
+                            var queryData = JsonConvert.DeserializeObject<AddOrderModel>(query.QueryJson);
+                            var res = await orders.AddOrder(queryData.Order, queryData.UserId);
                             response = JsonConvert.SerializeObject(res);
                             break;
                         }
-                    case nameof(users.CreateUser):
-                        {
-                            var queryData = JsonConvert.DeserializeObject<User>(query.QueryJson);
-                            var res = await users.CreateUser(queryData);
-                            response = JsonConvert.SerializeObject(res);
-                            break;
-                        }
-                    case nameof(users.GetUserDetials):
+                    case nameof(orders.GetUserOrders):
                         {
                             var queryData = JsonConvert.DeserializeObject<Guid>(query.QueryJson);
-                            var res = await users.GetUserDetials(queryData);
+                            var res = await orders.GetUserOrders(queryData);
                             response = JsonConvert.SerializeObject(res);
                             break;
                         }
@@ -92,9 +84,9 @@ namespace Nullean.UserOrdersApi.Services.UsersService
 
             var responseBytes = Encoding.UTF8.GetBytes(response);
 
-            _channel.BasicPublish(exchange: string.Empty, 
-                routingKey: props.ReplyTo, 
-                basicProperties: props, 
+            _channel.BasicPublish(exchange: string.Empty,
+                routingKey: props.ReplyTo,
+                basicProperties: props,
                 body: responseBytes);
         }
     }
